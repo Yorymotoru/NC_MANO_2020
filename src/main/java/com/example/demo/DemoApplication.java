@@ -1,11 +1,15 @@
-
 package com.example.demo;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
 
@@ -13,6 +17,9 @@ import java.util.ArrayList;
 @RestController
 public class DemoApplication {
     ArrayList<Building> buildings = new ArrayList<>();
+    private static Logger log = LoggerFactory.getLogger(DemoApplication.class);
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
@@ -30,10 +37,13 @@ public class DemoApplication {
 
     @PostMapping("/add")
     public ResponseEntity<Building> addBuilding(@RequestBody Building building) throws Exception {
-        if (searchBuilding(building) != null) {
+        try {
+            jdbcTemplate.update("INSERT INTO building(address, number_of_floors, residential) VALUES (?, ?, ?)", building.getAddress(),
+                    building.getNumberOfFloors(),
+                    building.getResidential());
+        } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
             throw new Exception("it already exist");
         }
-        buildings.add(building);
         return new ResponseEntity<>(building, HttpStatus.OK);
     }
 
