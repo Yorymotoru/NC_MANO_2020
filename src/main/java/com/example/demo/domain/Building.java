@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import com.sun.xml.bind.v2.runtime.RuntimeUtil;
+
 public class Building {
     private String address;
     private int numberOfFloors;
@@ -33,5 +35,13 @@ public class Building {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Building {" +
+                "address = '" + address + "', " +
+                "numberOfFloors = " + numberOfFloors + ", " +
+                "residential = " + residential + "}";
     }
 }
