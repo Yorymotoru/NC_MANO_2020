@@ -5,18 +5,11 @@ import com.example.demo.domain.Building;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,13 +21,13 @@ public class BuildingController {
     private JdbcTemplate jdbcTemplate;
     //private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private Building mapRowToBuilding(ResultSet rs, int rowNum) throws SQLException {
-        return new Building(
-                rs.getString("address"),
-                rs.getInt("number_of_floors"),
-                rs.getBoolean("residential")
-        );
-    }
+//    private Building mapRowToBuilding(ResultSet rs, int rowNum) throws SQLException {
+//        return new Building(
+//                rs.getString("address"),
+//                rs.getInt("number_of_floors"),
+//                rs.getBoolean("residential")
+//        );
+//    }
 
     public List<Building> getAll() {
         return jdbcTemplate.query(
@@ -52,7 +45,7 @@ public class BuildingController {
         if (out == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<Building>(out, HttpStatus.OK);
+            return new ResponseEntity<>(out, HttpStatus.OK);
         }
     }
 
@@ -79,17 +72,21 @@ public class BuildingController {
 //        return new ResponseEntity<Building>(HttpStatus.NOT_FOUND);
 //    }
 
-//    @PutMapping("/{address}")
-//    public ResponseEntity<Building> putBuilding(@PathVariable String address, @RequestBody Building building) {
-//        Building foundBuilding = searchBuilding(address);
-//        if (foundBuilding != null) {
-//            foundBuilding.setNumberOfFloors(building.getNumberOfFloors());
-//            foundBuilding.setResidential(building.getResidential());
-//            return new ResponseEntity<>(foundBuilding, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @PutMapping("/{address}")
+    public ResponseEntity putBuilding(@PathVariable String address, @RequestBody Building building) {
+        try {
+            jdbcTemplate.update("UPDATE building " +
+                            "SET address = ?, number_of_floors = ?, residential = ?" +
+                            "WHERE address = ?",
+                    building.getAddress(),
+                    building.getNumberOfFloors(),
+                    building.getResidential(),
+                    address);
+        } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(building, HttpStatus.OK);
+    }
 
 //    @PatchMapping("/{address}")
 //    public ResponseEntity<Building> patchBuilding(@PathVariable String address, @RequestBody Building building) {
@@ -121,13 +118,13 @@ public class BuildingController {
         return out;
     }
 
-    public Building searchBuilding(Building newBuilding, List<Building> buildings) {
-        Building out = null;
-        for (Building building : buildings) {
-            if (building.getAddress().equals(newBuilding.getAddress())) {
-                out = building;
-            }
-        }
-        return out;
-    }
+//    public Building searchBuilding(Building newBuilding, List<Building> buildings) {
+//        Building out = null;
+//        for (Building building : buildings) {
+//            if (building.getAddress().equals(newBuilding.getAddress())) {
+//                out = building;
+//            }
+//        }
+//        return out;
+//    }
 }
