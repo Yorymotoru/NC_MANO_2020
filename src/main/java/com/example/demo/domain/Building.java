@@ -1,14 +1,14 @@
 package com.example.demo.domain;
 
 public class Building {
+    private String address;
     private int numberOfFloors;
     private boolean residential;
-    private String address;
 
-    Building(int numberOfFloors, Boolean residential, String address) {
+    public Building(String address, int numberOfFloors, Boolean residential) {
+        this.address = address;
         this.numberOfFloors = numberOfFloors;
         this.residential = residential;
-        this.address = address;
     }
 
     public int getNumberOfFloors() {
