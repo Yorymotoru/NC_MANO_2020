@@ -62,15 +62,11 @@ public class BuildingController {
         return new ResponseEntity<>(building, HttpStatus.OK);
     }
 
-//    @DeleteMapping("/{address}")
-//    public ResponseEntity deleteBuilding(@PathVariable String address) {
-//        Building foundBuilding = searchBuilding(address);
-//        if (foundBuilding != null) {
-//            buildings.remove(foundBuilding);
-//            return new ResponseEntity<Building>(HttpStatus.ACCEPTED);
-//        }
-//        return new ResponseEntity<Building>(HttpStatus.NOT_FOUND);
-//    }
+    @DeleteMapping("/{address}")
+    public ResponseEntity deleteBuilding(@PathVariable String address) {
+        jdbcTemplate.update("DELETE FROM building WHERE address = ?", address);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     @PutMapping("/{address}")
     public ResponseEntity putBuilding(@PathVariable String address, @RequestBody Building building) {
