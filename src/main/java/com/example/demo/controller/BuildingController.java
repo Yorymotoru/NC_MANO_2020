@@ -19,29 +19,10 @@ public class BuildingController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    //private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-//    private Building mapRowToBuilding(ResultSet rs, int rowNum) throws SQLException {
-//        return new Building(
-//                rs.getString("address"),
-//                rs.getInt("number_of_floors"),
-//                rs.getBoolean("residential")
-//        );
-//    }
-
-    public List<Building> getAll() {
-        return jdbcTemplate.query(
-                "SELECT * FROM building",
-                (rs, rowNum) -> new Building(
-                        rs.getString("address"),
-                        rs.getInt("number_of_floors"),
-                        rs.getBoolean("residential")));
-    }
 
     @GetMapping("/get")
     public ResponseEntity getBuilding(@RequestParam(value = "address", defaultValue = "unknown") String address) {
-        List<Building> buildingList = getAll();
-        Building out = searchBuilding(address, buildingList);
+        Building out = searchBuilding(address);
         if (out == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         } else {
@@ -52,10 +33,7 @@ public class BuildingController {
     @PostMapping("/add")
     public ResponseEntity<Building> addBuilding(@RequestBody Building building) throws Exception {
         try {
-            jdbcTemplate.update("INSERT INTO building(address, number_of_floors, residential) VALUES (?, ?, ?)",
-                    building.getAddress(),
-                    building.getNumberOfFloors(),
-                    building.getResidential());
+            insertBuilding(building);
         } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
             throw new Exception("it already exist");
         }
@@ -64,47 +42,71 @@ public class BuildingController {
 
     @DeleteMapping("/{address}")
     public ResponseEntity deleteBuilding(@PathVariable String address) {
-        jdbcTemplate.update("DELETE FROM building WHERE address = ?", address);
+        delBuilding(address);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{address}")
     public ResponseEntity putBuilding(@PathVariable String address, @RequestBody Building building) {
-        try {
-            jdbcTemplate.update("UPDATE building " +
-                            "SET address = ?, number_of_floors = ?, residential = ?" +
-                            "WHERE address = ?",
-                    building.getAddress(),
-                    building.getNumberOfFloors(),
-                    building.getResidential(),
-                    address);
-        } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
+        Building foundBuilding = searchBuilding(address);
+        if (foundBuilding != null) {
+            delBuilding(address);
+            building.setAddress(address);
+            insertBuilding(building);
+            return new ResponseEntity<>(building, HttpStatus.OK);
+        }
+        else {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(building, HttpStatus.OK);
     }
 
-//    @PatchMapping("/{address}")
-//    public ResponseEntity<Building> patchBuilding(@PathVariable String address, @RequestBody Building building) {
-//        Building foundBuilding = searchBuilding(address);
-//        if (foundBuilding != null) {
-//            if (building.getAddress() != null) {
-//                foundBuilding.setAddress(building.getAddress());
-//            }
-//            if (building.getNumberOfFloors() != 0) {
-//                foundBuilding.setNumberOfFloors(building.getNumberOfFloors());
-//            }
-//            if (building.getResidential() != null) {
-//                foundBuilding.setResidential(building.getResidential());
-//            }
-//            return new ResponseEntity<>(foundBuilding, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//    }
+    @PatchMapping("/{address}")
+    public ResponseEntity<Building> patchBuilding(@PathVariable String address, @RequestBody Building building) {
+        Building foundBuilding = searchBuilding(address);
+        boolean flagNewAddressNotExist = true;
+        if (!building.getAddress().equals(address) && searchBuilding(building.getAddress()) != null) {
+            flagNewAddressNotExist = false;
+        }
+        if (foundBuilding != null && flagNewAddressNotExist) {
+            if (building.getAddress() != null) {
+                foundBuilding.setAddress(building.getAddress());
+            }
+            if (building.getNumberOfFloors() != 0) {
+                foundBuilding.setNumberOfFloors(building.getNumberOfFloors());
+            }
+            if (building.getResidential() != null) {
+                foundBuilding.setResidential(building.getResidential());
+            }
+            delBuilding(address);
+            insertBuilding(foundBuilding);
+            return new ResponseEntity<>(foundBuilding, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
+    public void insertBuilding(@RequestBody Building building) {
+        jdbcTemplate.update("INSERT INTO building(address, number_of_floors, residential) VALUES (?, ?, ?)",
+                building.getAddress(),
+                building.getNumberOfFloors(),
+                building.getResidential());
+    }
 
-    public Building searchBuilding(String address, List<Building> buildings) {
+    public void delBuilding(String address) {
+        jdbcTemplate.update("DELETE FROM building WHERE address = ?", address);
+    }
+
+    public List<Building> getAll() {
+        return jdbcTemplate.query(
+                "SELECT * FROM building",
+                (rs, rowNum) -> new Building(
+                        rs.getString("address"),
+                        rs.getInt("number_of_floors"),
+                        rs.getBoolean("residential")));
+    }
+
+    public Building searchBuilding(String address) {
+        List<Building> buildings = getAll();
         Building out = null;
         for (Building building : buildings) {
             if (building.getAddress().equals(address)) {
@@ -113,14 +115,4 @@ public class BuildingController {
         }
         return out;
     }
-
-//    public Building searchBuilding(Building newBuilding, List<Building> buildings) {
-//        Building out = null;
-//        for (Building building : buildings) {
-//            if (building.getAddress().equals(newBuilding.getAddress())) {
-//                out = building;
-//            }
-//        }
-//        return out;
-//    }
 }
