@@ -1,50 +1,20 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Building;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@Service
-public class BuildingService {
-    private JdbcTemplate jdbcTemplate;
+public interface BuildingService {
+    public List<Building> getAll();
 
-    @Autowired
-    BuildingService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    public Building search(String address);
 
-    public void insertBuilding(@RequestBody Building building) {
-        jdbcTemplate.update("INSERT INTO building(address, number_of_floors, residential) VALUES (?, ?, ?)",
-                building.getAddress(),
-                building.getNumberOfFloors(),
-                building.getResidential());
-    }
+    public void insert(@RequestBody Building building);
 
-    public void delBuilding(String address) {
-        jdbcTemplate.update("DELETE FROM building WHERE address = ?", address);
-    }
+    public int del(String address);
 
-    public List<Building> getAll() {
-        return jdbcTemplate.query(
-                "SELECT * FROM building",
-                (rs, rowNum) -> new Building(
-                        rs.getString("address"),
-                        rs.getInt("number_of_floors"),
-                        rs.getBoolean("residential")));
-    }
+    public boolean put(String address, Building building);
 
-    public Building searchBuilding(String address) {
-        List<Building> buildings = getAll();
-        Building out = null;
-        for (Building building : buildings) {
-            if (building.getAddress().equals(address)) {
-                out = building;
-            }
-        }
-        return out;
-    }
+    public boolean patch(String address, Building building);
 }

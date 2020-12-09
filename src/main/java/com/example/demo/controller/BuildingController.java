@@ -20,7 +20,7 @@ public class BuildingController {
 
     @GetMapping("/get")
     public ResponseEntity getBuilding(@RequestParam(value = "address", defaultValue = "unknown") String address) {
-        Building out = buildingService.searchBuilding(address);
+        Building out = buildingService.search(address);
         log.info("GET request for address: " + address);
         if (out == null) {
             log.info("Building with address '" + address + "' not found");
@@ -35,7 +35,7 @@ public class BuildingController {
     public ResponseEntity<Building> addBuilding(@RequestBody Building building) throws Exception {
         log.info("POST request for " + building);
         try {
-            buildingService.insertBuilding(building);
+            buildingService.insert(building);
         } catch (Exception JdbcSQLIntegrityConstraintViolationException) {
             log.info("Building is already exist");
             throw new Exception("it already exist");
@@ -47,23 +47,19 @@ public class BuildingController {
     @DeleteMapping("/{address}")
     public ResponseEntity deleteBuilding(@PathVariable String address) {
         log.info("DELETE request for address: " + address);
-        buildingService.delBuilding(address);
+        buildingService.del(address);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{address}")
     public ResponseEntity putBuilding(@PathVariable String address, @RequestBody Building building) {
         log.info("PUT request for address: " + address + " with " + building);
-        Building foundBuilding = buildingService.searchBuilding(address);
-        if (foundBuilding != null) {
-            buildingService.delBuilding(address);
-            building.setAddress(address);
-            buildingService.insertBuilding(building);
+        if (buildingService.put(address, building)) {
             log.info("Building has put");
             return new ResponseEntity<>(building, HttpStatus.OK);
         }
         else {
-            log.info("Building not found");
+            log.info("Building not found or new address is occupied");
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
@@ -71,28 +67,41 @@ public class BuildingController {
     @PatchMapping("/{address}")
     public ResponseEntity<Building> patchBuilding(@PathVariable String address, @RequestBody Building building) {
         log.info("PATCH request for address: " + address + " with " + building);
-        Building foundBuilding = buildingService.searchBuilding(address);
-        boolean flagNewAddressNotExist = true;
-        if (!building.getAddress().equals(address) && buildingService.searchBuilding(building.getAddress()) != null) {
-            flagNewAddressNotExist = false;
-        }
-        if (foundBuilding != null && flagNewAddressNotExist) {
-            if (building.getAddress() != null) {
-                foundBuilding.setAddress(building.getAddress());
-            }
-            if (building.getNumberOfFloors() != 0) {
-                foundBuilding.setNumberOfFloors(building.getNumberOfFloors());
-            }
-            if (building.getResidential() != null) {
-                foundBuilding.setResidential(building.getResidential());
-            }
-            buildingService.delBuilding(address);
-            buildingService.insertBuilding(foundBuilding);
-            log.info("Building has patch: " + foundBuilding);
-            return new ResponseEntity<>(foundBuilding, HttpStatus.OK);
+        if (buildingService.patch(address, building)) {
+            Building newBuilding = buildingService.search(building.getAddress());
+            log.info("Building has patch: " + newBuilding);
+            return new ResponseEntity<>(newBuilding, HttpStatus.OK);
         } else {
             log.info("Building not found or new address already exist");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+//    @PatchMapping("/{address}")
+//    public ResponseEntity<Building> patchBuilding(@PathVariable String address, @RequestBody Building building) {
+//        log.info("PATCH request for address: " + address + " with " + building);
+//        Building foundBuilding = buildingService.search(address);
+//        boolean flagNewAddressNotExist = true;
+//        if (!building.getAddress().equals(address) && buildingService.search(building.getAddress()) != null) {
+//            flagNewAddressNotExist = false;
+//        }
+//        if (foundBuilding != null && flagNewAddressNotExist) {
+//            if (building.getAddress() != null) {
+//                foundBuilding.setAddress(building.getAddress());
+//            }
+//            if (building.getNumberOfFloors() != 0) {
+//                foundBuilding.setNumberOfFloors(building.getNumberOfFloors());
+//            }
+//            if (building.getResidential() != null) {
+//                foundBuilding.setResidential(building.getResidential());
+//            }
+//            buildingService.del(address);
+//            buildingService.insert(foundBuilding);
+//            log.info("Building has patch: " + foundBuilding);
+//            return new ResponseEntity<>(foundBuilding, HttpStatus.OK);
+//        } else {
+//            log.info("Building not found or new address already exist");
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 }
