@@ -8,7 +8,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping
@@ -32,8 +36,11 @@ public class BuildingController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Building> addBuilding(@RequestBody Building building) throws Exception {
+    public ResponseEntity<Building> addBuilding(@RequestBody @Valid Building building, BindingResult bindingResult) throws Exception {
         log.info("POST request for " + building);
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>(building, HttpStatus.BAD_REQUEST);
+        }
         try {
             buildingService.insert(building);
         } catch (Exception JdbcSQLIntegrityConstraintViolationException) {

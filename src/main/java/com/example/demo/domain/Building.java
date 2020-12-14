@@ -1,11 +1,18 @@
 package com.example.demo.domain;
 
-import com.sun.xml.bind.v2.runtime.RuntimeUtil;
+import com.sun.istack.NotNull;
 
 public class Building {
+
+    @NotNull
     private Integer id;
+
+    @NotNull
     private String address;
+
+    @NotNegative
     private Integer numberOfFloors;
+
     private Boolean residential;
 
     public Building(Integer id, String address, Integer numberOfFloors, Boolean residential) {
