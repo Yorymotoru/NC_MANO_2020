@@ -8,13 +8,13 @@ import java.util.List;
 public interface BuildingService {
     public List<Building> getAll();
 
-    public Building search(String address);
+    public Building search(int id);
 
     public void insert(@RequestBody Building building);
 
-    public int del(String address);
+    public int del(int id);
 
-    public boolean put(String address, Building building);
+    public boolean put(int id, Building building);
 
-    public boolean patch(String address, Building building);
+    public Building patch(int id, Building building);
 }
