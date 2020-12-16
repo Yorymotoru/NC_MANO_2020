@@ -1,5 +1,4 @@
 logging:
-  file: logs/application-debug.log
   pattern:
     console: "%d %-5level %logger : %msg%n"
     file: "%d %-5level [%thread] %logger : %msg%n"
@@ -7,3 +6,5 @@ logging:
     org.springframework.web: ERROR
     com.example.demo: DEBUG
     org.hibernate: ERROR
+  file:
+    name: logs/application-debug.log

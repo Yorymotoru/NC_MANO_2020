@@ -2,15 +2,20 @@ package com.example.demo.domain;
 
 import com.sun.istack.NotNull;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Building {
 
-    @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotNull
     private String address;
 
-    @NotNegative
     private Integer numberOfFloors;
 
     private Boolean residential;
@@ -20,6 +25,10 @@ public class Building {
         this.address = address;
         this.numberOfFloors = numberOfFloors;
         this.residential = residential;
+    }
+
+    public Building() {
+
     }
 
     public Integer getId() {
