@@ -17,9 +17,12 @@ import javax.validation.Valid;
 @RequestMapping
 public class BuildingController {
     final private static Logger log = LoggerFactory.getLogger(DemoApplication.class);
+    BuildingService buildingService;
 
     @Autowired
-    BuildingService buildingService;
+    BuildingController(BuildingService buildingService) {
+        this.buildingService = buildingService;
+    }
 
     @GetMapping("/get")
     public ResponseEntity getBuilding(@RequestParam(value = "id", defaultValue = "0") int id) {

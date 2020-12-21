@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 @Service
-public class BuildingServiceImpl implements BuildingService{
+public class BuildingServiceImpl implements BuildingService {
 
     private final BuildingRepository buildingRepository;
 
@@ -35,16 +35,25 @@ public class BuildingServiceImpl implements BuildingService{
 
     @Override
     public int del(int id) {
-        return buildingRepository.deleteBuildingById(id);
+        Building currentBuilding = buildingRepository.findBuildingById(id);
+        if (currentBuilding != null) {
+            buildingRepository.deleteById(id);
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
     public boolean put(int id, Building building) {
         if (building.getId() == id || search(building.getId()) == null) {
-            if (del(id) == 0) {
+            //if (buildingRepository.findBuildingById(id) == null) {
+            building.setId(id);
+            if (buildingRepository.findBuildingById(id) == null) {
                 return false;
             } else {
-                insert(building);
+//                buildingRepository.setFixedAddressFor(building.getAddress(), id);
+                buildingRepository.save(building);
                 return true;
             }
         }
@@ -60,7 +69,7 @@ public class BuildingServiceImpl implements BuildingService{
         }
         if (foundBuilding != null && flagNewIdNotExist) {
             if (building.getId() != null) {
-                 foundBuilding.setId(building.getId());
+                foundBuilding.setId(building.getId());
             }
             if (building.getAddress() != null) {
                 foundBuilding.setAddress(building.getAddress());
