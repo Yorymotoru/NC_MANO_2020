@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/building")
@@ -22,6 +23,13 @@ public class BuildingController {
     @Autowired
     BuildingController(BuildingService buildingService) {
         this.buildingService = buildingService;
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Building>> findAll() {
+        log.info("GET request for a list of patients");
+        List<Building> buildings = buildingService.getAll();
+        return new ResponseEntity<>(buildings, buildings.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
 
     @GetMapping("/get")

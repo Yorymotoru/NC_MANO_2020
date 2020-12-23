@@ -8,3 +8,9 @@ logging:
     org.hibernate: ERROR
   file:
     name: logs/application-debug.log
+
+backend:
+  server:
+    http://localhost
+  port:
+    5432
