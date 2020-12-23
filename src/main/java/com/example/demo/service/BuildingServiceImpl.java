@@ -47,12 +47,10 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public boolean put(int id, Building building) {
         if (building.getId() == id || search(building.getId()) == null) {
-            //if (buildingRepository.findBuildingById(id) == null) {
             building.setId(id);
             if (buildingRepository.findBuildingById(id) == null) {
                 return false;
             } else {
-//                buildingRepository.setFixedAddressFor(building.getAddress(), id);
                 buildingRepository.save(building);
                 return true;
             }

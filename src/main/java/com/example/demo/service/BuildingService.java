@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 public interface BuildingService {
+
     public List<Building> getAll();
 
     public Building search(int id);
@@ -17,4 +18,5 @@ public interface BuildingService {
     public boolean put(int id, Building building);
 
     public Building patch(int id, Building building);
+
 }

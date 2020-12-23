@@ -1,4 +1,4 @@
-package com.example.demo.domain;
+package com.example.demo.domain.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

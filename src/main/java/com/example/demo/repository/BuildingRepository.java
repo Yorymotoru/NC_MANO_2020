@@ -17,23 +17,4 @@ public interface BuildingRepository extends CrudRepository<Building, Integer> {
 
     void deleteById(Integer id);
 
-//    Building saveBuildingById(Building building, Integer id);
-
-    /*
-    @Modifying
-    @Query(value = "UPDATE building " +
-            "SET address = :address, number_of_floors = :number_of_floors, residential = :residential " +
-            "WHERE id = :id",
-            nativeQuery = true)
-    void updateBuildingById(@Param("id") Integer id,
-                            @Param("address") String address,
-                            @Param("number_of_floors") Integer numberOfFloors,
-                            @Param("residential") Boolean residential);
-
-    @Modifying
-    @Query(value = "INSERT INTO building (id, address)  VALUES (?1, ?2)",
-            nativeQuery = true)
-    int updateAddressById(Integer id, String address);
-     */
-
 }
