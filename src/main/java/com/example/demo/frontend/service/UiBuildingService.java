@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -45,6 +46,18 @@ public class UiBuildingService {
         }
 
         return uiBuildings;
+    }
+
+    public UiBuilding getOne(Integer id) {
+        Building building;
+        try {
+            building = restTemplate.getForEntity(server + ":" + port + "/building/get?id=" + id, Building.class)
+                    .getBody();
+        }
+        catch(HttpClientErrorException e) {
+            building = null;
+        }
+        return building != null ? buildingBuilder.decode(building) : null;
     }
 
 }

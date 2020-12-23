@@ -24,7 +24,7 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public Building search(int id) {
+    public Building getOne(int id) {
         return buildingRepository.findBuildingById(id);
     }
 
@@ -46,7 +46,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public boolean put(int id, Building building) {
-        if (building.getId() == id || search(building.getId()) == null) {
+        if (building.getId() == id || getOne(building.getId()) == null) {
             building.setId(id);
             if (buildingRepository.findBuildingById(id) == null) {
                 return false;
@@ -60,9 +60,9 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public Building patch(int id, Building building) {
-        Building foundBuilding = search(id);
+        Building foundBuilding = getOne(id);
         boolean flagNewIdNotExist = true;
-        if (building.getId() != null && !(building.getId() == id) && search(building.getId()) != null) {
+        if (building.getId() != null && !(building.getId() == id) && getOne(building.getId()) != null) {
             flagNewIdNotExist = false;
         }
         if (foundBuilding != null && flagNewIdNotExist) {

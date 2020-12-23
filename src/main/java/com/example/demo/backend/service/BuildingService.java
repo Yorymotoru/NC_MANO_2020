@@ -9,7 +9,7 @@ public interface BuildingService {
 
     public List<Building> getAll();
 
-    public Building search(int id);
+    public Building getOne(int id);
 
     public void insert(@RequestBody Building building);
 

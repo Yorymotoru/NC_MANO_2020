@@ -33,12 +33,12 @@ public class BuildingController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity getBuilding(@RequestParam(value = "id", defaultValue = "0") int id) {
-        Building out = buildingService.search(id);
+    public ResponseEntity<Building> getBuilding(@RequestParam(value = "id", defaultValue = "0") int id) {
+        Building out = buildingService.getOne(id);
         log.info("GET request for id: " + id);
         if (out == null) {
             log.info("Building with id '" + id + "' not found");
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             log.info("Founded: " + out);
             return new ResponseEntity<>(out, HttpStatus.OK);
