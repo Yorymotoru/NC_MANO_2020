@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package com.example.demo.backend.controller;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.domain.Building;
-import com.example.demo.service.BuildingService;
+import com.example.demo.backend.domain.Building;
+import com.example.demo.backend.service.BuildingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping
+@RequestMapping("/building")
 public class BuildingController {
     final private static Logger log = LoggerFactory.getLogger(DemoApplication.class);
     BuildingService buildingService;

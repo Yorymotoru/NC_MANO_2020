@@ -1,7 +1,7 @@
-package com.example.demo.service;
+package com.example.demo.backend.service;
 
-import com.example.demo.domain.Building;
-import com.example.demo.repository.BuildingRepository;
+import com.example.demo.backend.domain.Building;
+import com.example.demo.backend.repository.BuildingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;

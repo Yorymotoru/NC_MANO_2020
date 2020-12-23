@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package com.example.demo.backend.repository;
 
-import com.example.demo.domain.Tenant;
+import com.example.demo.backend.domain.Tenant;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

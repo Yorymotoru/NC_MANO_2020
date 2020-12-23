@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package com.example.demo.backend.controller;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.domain.Tenant;
-import com.example.demo.service.TenantService;
+import com.example.demo.backend.domain.Tenant;
+import com.example.demo.backend.service.TenantService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package com.example.demo.service;
+package com.example.demo.backend.service;
 
-import com.example.demo.domain.Tenant;
+import com.example.demo.backend.domain.Tenant;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;

@@ -1,15 +1,12 @@
-package com.example.demo.service;
+package com.example.demo.backend.service;
 
-import com.example.demo.domain.Building;
-import com.example.demo.domain.Tenant;
-import com.example.demo.repository.BuildingRepository;
-import com.example.demo.repository.TenantRepository;
+import com.example.demo.backend.domain.Tenant;
+import com.example.demo.backend.repository.BuildingRepository;
+import com.example.demo.backend.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TenantServiceImpl implements TenantService {

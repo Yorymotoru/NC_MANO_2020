@@ -1,4 +1,4 @@
-package com.example.demo.domain.validator;
+package com.example.demo.backend.domain.validator;
 
 import org.springframework.stereotype.Service;
 
