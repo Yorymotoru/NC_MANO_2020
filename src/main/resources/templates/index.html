@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Building list</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.js"></script>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <script src="@{/js/main.js}"></script>
+</head>
+<body ng-app="BuildingManagement" ng-controller="UiController">
+<h1>Building list</h1>
+<div class="table">
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Address</th>
+            <th>Num of floors</th>
+        </tr>
+        <tr th:each="building : ${buildings}">
+            <td th:text="${building.id}">...</td>
+            <td th:utext="${building.address}">...</td>
+            <td th:utext="${building.numberOfFloors}">...</td>
+            <td>
+                <a th:href="@{/removeBuilding/{building_id}(building_id=${building.id})}">Delete</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

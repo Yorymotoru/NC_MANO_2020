@@ -1,15 +1,11 @@
 package com.example.demo.frontend.controller;
 
-import com.example.demo.backend.domain.Building;
 import com.example.demo.frontend.domain.UiBuilding;
 import com.example.demo.frontend.service.UiBuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,4 +37,9 @@ public class UiController {
         }
     }
 
+    @DeleteMapping("/building")
+    public ResponseEntity deleteBuilding(@PathVariable int id) {
+        uiBuildingService.del(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

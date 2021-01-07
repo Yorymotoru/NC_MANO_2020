@@ -12,6 +12,7 @@ public class BuildingBuilder implements Builder<Building, UiBuilding> {
         Building b = new Building();
         b.setAddress(uiBuilding.getAddress());
         b.setNumberOfFloors(uiBuilding.getNumberOfFloors());
+        b.setId(uiBuilding.getId());
         return b;
     }
 
@@ -20,6 +21,7 @@ public class BuildingBuilder implements Builder<Building, UiBuilding> {
         UiBuilding ub = new UiBuilding();
         ub.setAddress(building.getAddress());
         ub.setNumberOfFloors(building.getNumberOfFloors());
+        ub.setId(building.getId());
         return ub;
     }
 }

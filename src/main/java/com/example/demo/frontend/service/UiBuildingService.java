@@ -53,11 +53,14 @@ public class UiBuildingService {
         try {
             building = restTemplate.getForEntity(server + ":" + port + "/building/get?id=" + id, Building.class)
                     .getBody();
-        }
-        catch(HttpClientErrorException e) {
+        } catch (HttpClientErrorException e) {
             building = null;
         }
         return building != null ? buildingBuilder.decode(building) : null;
+    }
+
+    public void del(Integer id) {
+        restTemplate.delete(server + ":" + port + "building/" + id, Building.class);
     }
 
 }

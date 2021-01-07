@@ -27,7 +27,7 @@ public class BuildingController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Building>> findAll() {
-        log.info("GET request for a list of patients");
+        log.info("GET request for a list of buildings");
         List<Building> buildings = buildingService.getAll();
         return new ResponseEntity<>(buildings, buildings.isEmpty() ? HttpStatus.NOT_FOUND : HttpStatus.OK);
     }
