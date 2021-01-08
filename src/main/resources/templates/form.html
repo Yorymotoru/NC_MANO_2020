@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add building</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+</head>
+<body>
+<h1>Add building</h1>
+    <form th:action="@{/addBuilding}" th:object="${uiBuildingForm}" method="POST">
+        Building ID:
+        <input type="number" th:field="*{building_id}"/>
+        <br/>
+        Address:
+        <input type="text" th:field="*{address}"/>
+        <br/>
+        Number of floors:
+        <input type="number" th:field="*{numOfFloors}"/>
+        <br/>
+        <input type="submit" value="Create"/>
+    </form>
+</body>
+</html>

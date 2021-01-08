@@ -3,6 +3,7 @@ package com.example.demo.frontend.service;
 import com.example.demo.backend.domain.Building;
 import com.example.demo.frontend.builder.BuildingBuilder;
 import com.example.demo.frontend.domain.UiBuilding;
+import com.example.demo.frontend.form.UiBuildingForm;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,12 @@ public class UiBuildingService {
     }
 
     public void del(Integer id) {
-        restTemplate.delete(server + ":" + port + "building/" + id, Building.class);
+        restTemplate.delete(server + ":" + port + "/building/" + id, Building.class);
+    }
+
+    public void save(UiBuilding uiBuilding) {
+        Building building = buildingBuilder.encode(uiBuilding);
+        restTemplate.postForEntity(server + ":" + port + "/building/add", building, Building.class);
     }
 
 }
