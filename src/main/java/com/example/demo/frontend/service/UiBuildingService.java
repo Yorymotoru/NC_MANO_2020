@@ -3,7 +3,6 @@ package com.example.demo.frontend.service;
 import com.example.demo.backend.domain.Building;
 import com.example.demo.frontend.builder.BuildingBuilder;
 import com.example.demo.frontend.domain.UiBuilding;
-import com.example.demo.frontend.form.UiBuildingForm;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -45,6 +45,8 @@ public class UiBuildingService {
                 uiBuildings.add(buildingBuilder.decode(b));
             }
         }
+
+        uiBuildings.sort(Comparator.comparing(UiBuilding::getId));
 
         return uiBuildings;
     }

@@ -1,0 +1,83 @@
+body {
+    background: #FBF9DA;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, serif;
+    margin-bottom: 15px;
+}
+
+.content {
+    max-width: 1000px;
+    padding: 0 20px 0 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+}
+
+table {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif, serif;
+    font-size: 14px;
+    border: 2px solid #FF7452;
+    text-align: center;
+    border-radius: 6px;
+}
+
+th, td:first-child {
+    background: #F5A877;
+    color: white;
+    padding: 10px 20px;
+}
+
+th, td {
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    border-color: white;
+}
+
+td {
+    background: #EBD5A4;
+}
+
+th:first-child {
+    border-top-left-radius: 5px;
+}
+
+th:last-child {
+    border-top-right-radius: 5px;
+    border-right: none;
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 5px;
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 5px;
+}
+
+.address {
+    text-align: left;
+    padding-left: 10px;
+}
+
+.del {
+    border: 1px solid #DB4946;
+    background: #DB4946;
+    padding: 5px 10px 5px 10px;
+    color: azure;
+    text-decoration: none;
+    border-radius: 3px;
+    margin: 0 4px 0 4px;
+}
+
+.edit {
+    border: 1px solid #FF7452;
+    background: #FF7452;
+    padding: 5px 10px 5px 10px;
+    color: azure;
+    text-decoration: none;
+    border-radius: 3px;
+    margin: 0 4px 0 4px;
+}
+
+h1 {
+    margin-top: 20px;
+}
